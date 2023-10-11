@@ -1,6 +1,6 @@
 package mg.tommy.springboot.spring6reactiveapp.controller;
 
-import mg.tommy.springboot.spring6reactiveapp.model.domain.Beer;
+import mg.tommy.springboot.spring6reactiveapp.model.entity.h2.Beer;
 import mg.tommy.springboot.spring6reactiveapp.model.dto.BeerDto;
 import mg.tommy.springboot.spring6reactiveapp.repository.BeerRepositoryTest;
 import org.junit.jupiter.api.*;
@@ -11,6 +11,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
+
+import static org.hamcrest.Matchers.startsWith;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -65,7 +67,7 @@ class BeerControllerTest {
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .exchange()
                 .expectStatus().isCreated()
-                .expectHeader().location("http://localhost:8080/api/v2/beers/4");
+                .expectHeader().value("location", startsWith("http://localhost:8080/api/v2/beers/"));
     }
 
     @Test

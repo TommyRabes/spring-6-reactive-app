@@ -2,8 +2,9 @@ package mg.tommy.springboot.spring6reactiveapp.repository;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import mg.tommy.springboot.spring6reactiveapp.configuration.DatabaseConfig;
-import mg.tommy.springboot.spring6reactiveapp.model.domain.Beer;
+import mg.tommy.springboot.spring6reactiveapp.configuration.database.H2Config;
+import mg.tommy.springboot.spring6reactiveapp.model.entity.h2.Beer;
+import mg.tommy.springboot.spring6reactiveapp.repository.h2.BeerRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.r2dbc.DataR2dbcTest;
@@ -12,7 +13,7 @@ import org.springframework.context.annotation.Import;
 import java.math.BigDecimal;
 
 @DataR2dbcTest
-@Import(DatabaseConfig.class)
+@Import(H2Config.class)
 public class BeerRepositoryTest {
 
     @Autowired

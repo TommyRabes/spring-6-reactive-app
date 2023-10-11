@@ -26,7 +26,7 @@ public class CustomerController {
     }
 
     @GetMapping("{customerId}")
-    Mono<ResponseEntity<CustomerDto>> getById(@PathVariable("customerId") Integer customerId) {
+    Mono<ResponseEntity<CustomerDto>> getById(@PathVariable("customerId") String customerId) {
         return customerService.findById(customerId)
                 .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
                 .map(ResponseEntity::ok);
@@ -43,7 +43,7 @@ public class CustomerController {
     }
 
     @PutMapping("{customerId}")
-    Mono<ResponseEntity<Void>> update(@PathVariable("customerId") Integer id,
+    Mono<ResponseEntity<Void>> update(@PathVariable("customerId") String id,
                                       @Validated @RequestBody CustomerDto dto) {
         return customerService.update(id, dto)
                 .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
@@ -51,7 +51,7 @@ public class CustomerController {
     }
 
     @PatchMapping("{customerId}")
-    Mono<ResponseEntity<Void>> patch(@PathVariable("customerId") Integer id,
+    Mono<ResponseEntity<Void>> patch(@PathVariable("customerId") String id,
                                      @Validated @RequestBody CustomerDto dto) {
         return customerService.patch(id, dto)
                 .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
@@ -59,7 +59,7 @@ public class CustomerController {
     }
 
     @DeleteMapping("{customerId}")
-    Mono<ResponseEntity<Void>> delete(@PathVariable("customerId") Integer id) {
+    Mono<ResponseEntity<Void>> delete(@PathVariable("customerId") String id) {
         return customerService.findById(id)
                 .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
                 .map(CustomerDto::getId)

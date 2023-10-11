@@ -27,7 +27,7 @@ public class BeerController {
     }
 
     @GetMapping("{beerId}")
-    Mono<BeerDto> getBeerById(@PathVariable("beerId") Integer id) {
+    Mono<BeerDto> getBeerById(@PathVariable("beerId") String id) {
         return beerService.getById(id)
                 .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)));
     }
@@ -42,7 +42,7 @@ public class BeerController {
     }
 
     @PutMapping("{beerId}")
-    Mono<ResponseEntity<Void>> updateBeer(@PathVariable("beerId") Integer beerId,
+    Mono<ResponseEntity<Void>> updateBeer(@PathVariable("beerId") String beerId,
                                           @Validated @RequestBody BeerDto beerDto) {
         return beerService.update(beerId, beerDto)
                 .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
@@ -50,7 +50,7 @@ public class BeerController {
     }
 
     @PatchMapping("{beerId}")
-    Mono<ResponseEntity<Void>> patchBeer(@PathVariable("beerId") Integer beerId,
+    Mono<ResponseEntity<Void>> patchBeer(@PathVariable("beerId") String beerId,
                                          // Needs to use a different validation group for this patch operation
                                          @Validated @RequestBody BeerDto beerDto) {
         return beerService.patch(beerId, beerDto)
@@ -59,7 +59,7 @@ public class BeerController {
     }
 
     @DeleteMapping("{beerId}")
-    Mono<ResponseEntity<Void>> deleteBeer(@PathVariable("beerId") Integer beerId) {
+    Mono<ResponseEntity<Void>> deleteBeer(@PathVariable("beerId") String beerId) {
         return beerService.getById(beerId)
                 .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
                 .map(BeerDto::getId)

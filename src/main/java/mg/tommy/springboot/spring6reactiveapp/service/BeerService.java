@@ -1,20 +1,21 @@
 package mg.tommy.springboot.spring6reactiveapp.service;
 
 import mg.tommy.springboot.spring6reactiveapp.model.dto.BeerDto;
-import org.springframework.http.ResponseEntity;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public interface BeerService {
     Flux<BeerDto> listBeers();
 
-    Mono<BeerDto> getById(Integer id);
+    Mono<BeerDto> getById(String id);
+    Mono<BeerDto> getByBeerName(String beerName);
+    Flux<BeerDto> getByBeerStyle(String beerStyle);
 
     Mono<BeerDto> save(BeerDto beerDto);
 
-    Mono<BeerDto> update(Integer beerId, BeerDto beerDto);
+    Mono<BeerDto> update(String beerId, BeerDto beerDto);
 
-    Mono<BeerDto> patch(Integer beerId, BeerDto beerDto);
+    Mono<BeerDto> patch(String beerId, BeerDto beerDto);
 
-    Mono<Void> delete(Integer beerId);
+    Mono<Void> delete(String beerId);
 }

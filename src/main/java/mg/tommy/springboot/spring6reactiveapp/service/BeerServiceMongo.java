@@ -2,10 +2,9 @@ package mg.tommy.springboot.spring6reactiveapp.service;
 
 import lombok.RequiredArgsConstructor;
 import mg.tommy.springboot.spring6reactiveapp.mapper.BeerMapper;
-import mg.tommy.springboot.spring6reactiveapp.model.entity.h2.Beer;
 import mg.tommy.springboot.spring6reactiveapp.model.dto.BeerDto;
-import mg.tommy.springboot.spring6reactiveapp.repository.h2.BeerRepository;
-import org.springframework.context.annotation.Primary;
+import mg.tommy.springboot.spring6reactiveapp.model.entity.mongo.Beer;
+import mg.tommy.springboot.spring6reactiveapp.repository.mongo.BeerRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import reactor.core.publisher.Flux;
@@ -13,22 +12,20 @@ import reactor.core.publisher.Mono;
 
 import java.util.Objects;
 
-@Primary
 @Service
 @RequiredArgsConstructor
-public class BeerServiceImpl implements BeerService {
-    private final BeerRepository repository;
+public class BeerServiceMongo implements BeerService {
     private final BeerMapper mapper;
+    private final BeerRepository repository;
+
     @Override
     public Flux<BeerDto> listBeers() {
-        return repository.findAll()
-                .map(mapper::toDto);
+        return repository.findAll().map(mapper::toDto);
     }
 
     @Override
     public Mono<BeerDto> getById(String id) {
-        return repository.findById(Integer.valueOf(id))
-                .map(mapper::toDto);
+        return repository.findById(id).map(mapper::toDto);
     }
 
     @Override
@@ -43,13 +40,13 @@ public class BeerServiceImpl implements BeerService {
 
     @Override
     public Mono<BeerDto> save(BeerDto beerDto) {
-        return repository.save(mapper.toSqlBeer(beerDto))
+        return repository.save(mapper.toNoSqlBeer(beerDto))
                 .map(mapper::toDto);
     }
 
     @Override
     public Mono<BeerDto> update(String beerId, BeerDto beerDto) {
-        return repository.findById(Integer.valueOf(beerId))
+        return repository.findById(beerId)
                 .map(beerToUpdate -> {
                     beerToUpdate.setBeerName(beerDto.getBeerName());
                     beerToUpdate.setBeerStyle(beerDto.getBeerStyle());
@@ -64,7 +61,7 @@ public class BeerServiceImpl implements BeerService {
 
     @Override
     public Mono<BeerDto> patch(String beerId, BeerDto beerDto) {
-        return repository.findById(Integer.valueOf(beerId))
+        return repository.findById(beerId)
                 .map(beerToPatch -> {
                     Beer.BeerBuilder builder = beerToPatch.toBuilder();
                     if (StringUtils.hasText(beerDto.getBeerName())) {
@@ -90,6 +87,6 @@ public class BeerServiceImpl implements BeerService {
 
     @Override
     public Mono<Void> delete(String beerId) {
-        return repository.deleteById(Integer.valueOf(beerId));
+        return repository.deleteById(beerId);
     }
 }

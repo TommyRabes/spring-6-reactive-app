@@ -1,4 +1,4 @@
-package mg.tommy.springboot.spring6reactiveapp.configuration;
+package mg.tommy.springboot.spring6reactiveapp.configuration.database;
 
 import io.r2dbc.spi.ConnectionFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -6,14 +6,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
 import org.springframework.data.r2dbc.config.EnableR2dbcAuditing;
-import org.springframework.r2dbc.connection.R2dbcTransactionManager;
 import org.springframework.r2dbc.connection.init.ConnectionFactoryInitializer;
 import org.springframework.r2dbc.connection.init.ResourceDatabasePopulator;
-import org.springframework.transaction.ReactiveTransactionManager;
 
 @Configuration
 @EnableR2dbcAuditing
-public class DatabaseConfig {
+public class H2Config {
 
     @Value("classpath:/schema.sql")
     Resource resource;

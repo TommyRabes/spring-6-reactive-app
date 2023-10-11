@@ -1,5 +1,6 @@
 package mg.tommy.springboot.spring6reactiveapp.model.dto;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,12 +14,13 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Builder(toBuilder = true)
 public class CustomerDto {
-    private Integer id;
+    private String id;
     @Size(min = 3, max = 255)
     private String firstName;
     @Size(min = 3, max = 255)
     private String lastName;
     @Size(min = 3, max = 320)
+    @Email
     private String email;
     private LocalDate birthdate;
 }
