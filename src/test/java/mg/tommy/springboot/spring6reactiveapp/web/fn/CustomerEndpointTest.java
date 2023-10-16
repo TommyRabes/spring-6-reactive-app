@@ -16,6 +16,7 @@ import static mg.tommy.springboot.spring6reactiveapp.service.CustomerServiceMong
 import static mg.tommy.springboot.spring6reactiveapp.web.fn.CustomerRouter.BASE_PATH;
 import static mg.tommy.springboot.spring6reactiveapp.web.fn.CustomerRouter.CUSTOMER_PATH_ID;
 import static org.hamcrest.Matchers.*;
+import static org.springframework.security.test.web.reactive.server.SecurityMockServerConfigurers.mockOAuth2Login;
 
 @SpringBootTest
 @AutoConfigureWebTestClient
@@ -30,7 +31,9 @@ public class CustomerEndpointTest {
 
     @Test
     void patchCustomerNotFoundTest() {
-        webTestClient.patch()
+        webTestClient
+                .mutateWith(mockOAuth2Login())
+                .patch()
                 .uri(CUSTOMER_PATH_ID, 1000)
                 .body(Mono.just(getTestCustomer()), CustomerDto.class)
                 .exchange()
@@ -40,7 +43,9 @@ public class CustomerEndpointTest {
     @Test
     void patchCustomerTest() {
         CustomerDto savedCustomer = saveTestCustomer();
-        webTestClient.patch()
+        webTestClient
+                .mutateWith(mockOAuth2Login())
+                .patch()
                 .uri(CUSTOMER_PATH_ID, savedCustomer.getId())
                 .body(Mono.just(getTestCustomer()), CustomerDto.class)
                 .exchange()
@@ -50,12 +55,16 @@ public class CustomerEndpointTest {
     @Test
     void deleteCustomerTest() {
         CustomerDto savedCustomer = saveTestCustomer();
-        webTestClient.delete()
+        webTestClient
+                .mutateWith(mockOAuth2Login())
+                .delete()
                 .uri(CUSTOMER_PATH_ID, savedCustomer.getId())
                 .exchange()
                 .expectStatus().isNoContent();
 
-        webTestClient.get()
+        webTestClient
+                .mutateWith(mockOAuth2Login())
+                .get()
                 .uri(CUSTOMER_PATH_ID, savedCustomer.getId())
                 .exchange()
                 .expectStatus().isNotFound();
@@ -63,7 +72,9 @@ public class CustomerEndpointTest {
 
     @Test
     void deleteCustomerNotFoundTest() {
-        webTestClient.delete()
+        webTestClient
+                .mutateWith(mockOAuth2Login())
+                .delete()
                 .uri(CUSTOMER_PATH_ID, 1000)
                 .exchange()
                 .expectStatus().isNotFound();
@@ -72,7 +83,9 @@ public class CustomerEndpointTest {
     @Test
     void updateCustomerTest() {
         CustomerDto savedCustomer = saveTestCustomer();
-        webTestClient.put()
+        webTestClient
+                .mutateWith(mockOAuth2Login())
+                .put()
                 .uri(CUSTOMER_PATH_ID, savedCustomer.getId())
                 .body(Mono.just(getTestCustomer()), CustomerDto.class)
                 .exchange()
@@ -85,7 +98,9 @@ public class CustomerEndpointTest {
         CustomerDto badCustomer = savedCustomer.toBuilder()
                 .firstName("")
                 .build();
-        webTestClient.put()
+        webTestClient
+                .mutateWith(mockOAuth2Login())
+                .put()
                 .uri(CUSTOMER_PATH_ID, savedCustomer.getId())
                 .body(Mono.just(badCustomer), CustomerDto.class)
                 .exchange()
@@ -94,7 +109,9 @@ public class CustomerEndpointTest {
 
     @Test
     void createCustomerTest() {
-        webTestClient.post()
+        webTestClient
+                .mutateWith(mockOAuth2Login())
+                .post()
                 .uri(BASE_PATH)
                 .body(Mono.just(getTestCustomer()), CustomerDto.class)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
@@ -108,7 +125,9 @@ public class CustomerEndpointTest {
         CustomerDto badCustomer = getTestCustomer().toBuilder()
                 .email("notanemailformat")
                 .build();
-        webTestClient.post()
+        webTestClient
+                .mutateWith(mockOAuth2Login())
+                .post()
                 .uri(BASE_PATH)
                 .body(Mono.just(badCustomer), CustomerDto.class)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
@@ -119,7 +138,9 @@ public class CustomerEndpointTest {
     @Test
     void getByIdTest() {
         CustomerDto savedCustomer = saveTestCustomer();
-        webTestClient.get()
+        webTestClient
+                .mutateWith(mockOAuth2Login())
+                .get()
                 .uri(CUSTOMER_PATH_ID, savedCustomer.getId())
                 .exchange()
                 .expectStatus().isOk()
@@ -129,7 +150,9 @@ public class CustomerEndpointTest {
 
     @Test
     void getByIdNotFoundTest() {
-        webTestClient.get()
+        webTestClient
+                .mutateWith(mockOAuth2Login())
+                .get()
                 .uri(CUSTOMER_PATH_ID, 1000)
                 .exchange()
                 .expectStatus().isNotFound();
@@ -137,7 +160,9 @@ public class CustomerEndpointTest {
 
     @Test
     void listCustomersTest() {
-        webTestClient.get()
+        webTestClient
+                .mutateWith(mockOAuth2Login())
+                .get()
                 .uri(BASE_PATH)
                 .exchange()
                 .expectStatus().isOk()
