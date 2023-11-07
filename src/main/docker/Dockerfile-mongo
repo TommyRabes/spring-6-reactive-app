@@ -1,0 +1,9 @@
+FROM mongo:latest
+
+ENV MONGO_INITDB_ROOT_USERNAME admin
+ENV MONGO_INITDB_ROOT_PASSWORD 123456
+ENV MONGO_INITDB_DATABASE sfg
+
+COPY src/main/script/mongo-init.js /docker-entrypoint-initdb.d/
+
+CMD ["mongod", "--auth"]

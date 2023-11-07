@@ -36,7 +36,7 @@ public class BeerController {
     Mono<ResponseEntity<Void>> saveBeer(@Validated @RequestBody BeerDto beerDto) {
         return beerService.save(beerDto)
                 .map(savedDto -> ResponseEntity.created(UriComponentsBuilder
-                        .fromHttpUrl("http://localhost:8080" + BEER_PATH + "/" + savedDto.getId())
+                        .fromPath(BEER_PATH + "/" + savedDto.getId())
                         .build().toUri()
                 ).build());
     }

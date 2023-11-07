@@ -58,7 +58,7 @@ public class CustomerControllerIT {
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .exchange()
                 .expectStatus().isCreated()
-                .expectHeader().location("http://localhost:8080" + BASE_PATH + "/4");
+                .expectHeader().location(BASE_PATH + "/4");
     }
 
     @Test

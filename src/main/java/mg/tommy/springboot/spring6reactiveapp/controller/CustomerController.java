@@ -37,7 +37,7 @@ public class CustomerController {
         return customerService.save(customer)
                 .map(savedCustomer -> ResponseEntity
                         .created(UriComponentsBuilder
-                                .fromHttpUrl("http://localhost:8080" + BASE_PATH + "/{customerId}")
+                                .fromPath(BASE_PATH + "/{customerId}")
                                 .build(savedCustomer.getId()))
                         .build());
     }

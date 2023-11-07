@@ -12,10 +12,12 @@
 	<artifactId>spring-6-reactive-app</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>spring-6-reactive-app</name>
-	<description>A web application that showcases the features of the reactive stack provided by Spring Framework 6 and Spring Boot 3</description>
+	<description>A web application that showcases the features of the reactive stack provided by Spring WebFlux with Spring Framework 6 and Spring Boot 3</description>
 	<properties>
 		<java.version>21</java.version>
 		<org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
+		<database.persistent.host>localhost</database.persistent.host>
+		<oauth2.authorization.server.host>localhost</oauth2.authorization.server.host>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -58,6 +60,13 @@
 			<artifactId>mapstruct</artifactId>
 			<version>${org.mapstruct.version}</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webflux-ui</artifactId>
+			<version>2.2.0</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -66,6 +75,16 @@
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.rest-assured</groupId>
+			<artifactId>rest-assured</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.rest-assured</groupId>
+			<artifactId>spring-web-test-client</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -91,6 +110,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
+					<jvmArguments>-Dspring.application.admin.enabled=true</jvmArguments>
 					<excludes>
 						<exclude>
 							<groupId>org.projectlombok</groupId>
@@ -98,6 +118,32 @@
 						</exclude>
 					</excludes>
 				</configuration>
+				<executions>
+					<execution>
+						<id>spring-doc</id>
+						<goals>
+							<goal>start</goal>
+							<goal>stop</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.springdoc</groupId>
+				<artifactId>springdoc-openapi-maven-plugin</artifactId>
+				<version>1.4</version>
+				<configuration>
+					<apiDocsUrl>http://localhost:8082/v3/api-docs.yaml</apiDocsUrl>
+					<outputFileName>oa3.yml</outputFileName>
+				</configuration>
+				<executions>
+					<execution>
+						<id>integration-test</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -129,6 +175,34 @@
 				</configuration>
 			</plugin>
 		</plugins>
+
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>docker</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<configuration>
+							<skipTests>true</skipTests>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+			<properties>
+				<database.persistent.host>beer-mongo</database.persistent.host>
+				<oauth2.authorization.server.host>oauth2-authorization-server</oauth2.authorization.server.host>
+			</properties>
+		</profile>
+	</profiles>
 
 </project>

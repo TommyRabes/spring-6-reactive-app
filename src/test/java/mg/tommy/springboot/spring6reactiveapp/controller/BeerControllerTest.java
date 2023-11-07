@@ -78,7 +78,7 @@ class BeerControllerTest {
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .exchange()
                 .expectStatus().isCreated()
-                .expectHeader().value("location", startsWith("http://localhost:8080/api/v2/beers/"));
+                .expectHeader().value("location", startsWith("/api/v2/beers/"));
     }
 
     @Test

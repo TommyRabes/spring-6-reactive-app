@@ -1,0 +1,26 @@
+services:
+  oauth2-authorization-server:
+    image: tommyrabes/spring-authorization-server
+    ports:
+      - 9000:9000
+  beer-mongo:
+    image: tommyrabes/beer-mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: 123456
+    ports:
+      - 27017:27017
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh beer-mongo:27017/admin --quiet -u admin -p 123456
+      interval: 10s
+      timeout: 10s
+      retries: 5
+  spring-6-reactive-app:
+    image: tommyrabes/spring-6-reactive-app
+    ports:
+      - 8082:8082
+    depends_on:
+      beer-mongo:
+        condition: service_healthy
+      oauth2-authorization-server:
+        condition: service_started

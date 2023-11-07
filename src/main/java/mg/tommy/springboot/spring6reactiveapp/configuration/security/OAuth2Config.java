@@ -19,7 +19,9 @@ public class OAuth2Config {
                 // but even without this line, the controller tests do pass
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .authorizeExchange(authorizeExchangeSpec ->
-                        authorizeExchangeSpec.anyExchange().authenticated())
+                        authorizeExchangeSpec
+                                .pathMatchers("/v3/api-docs**", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/webjars/swagger-ui/**").permitAll()
+                                .anyExchange().authenticated())
                 .oauth2ResourceServer(oAuth2ResourceServerSpec ->
                         oAuth2ResourceServerSpec.jwt(Customizer.withDefaults()));
         return httpSecurity.build();

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-// Giving a different bean name is required because there is another bean class which named the same
+// Giving a different bean name is required because there is another bean class having the same name
 @Repository("MongoBeerRepository")
 public interface BeerRepository extends ReactiveMongoRepository<Beer, String> {
 

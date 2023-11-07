@@ -1,0 +1,9 @@
+spring:
+  data:
+    mongodb:
+      authentication-database: sfg
+      database: sfg
+      host: @database.persistent.host@
+      port: 27017
+      username: ${mongo.username}
+      password: ${mongo.password}
