@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: spring-6-reactive-app
+  name: spring-6-reactive-app
+spec:
+  ports:
+  - name: 8082-8082
+    nodePort: 31080
+    port: 8082
+    protocol: TCP
+    targetPort: 8082
+  selector:
+    app: spring-6-reactive-app
+  type: NodePort
+status:
+  loadBalancer: {}

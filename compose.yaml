@@ -11,7 +11,7 @@ services:
     ports:
       - 27017:27017
     healthcheck:
-      test: echo 'db.runCommand("ping").ok' | mongosh beer-mongo:27017/admin --quiet -u admin -p 123456
+      test: echo 'db.runCommand("ping").ok' | mongosh beer-mongo:27017/admin --quiet -u $$MONGO_INITDB_ROOT_USERNAME -p $$MONGO_INITDB_ROOT_PASSWORD
       interval: 10s
       timeout: 10s
       retries: 5

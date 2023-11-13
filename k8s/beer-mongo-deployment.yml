@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: beer-mongo
+  name: beer-mongo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: beer-mongo
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: beer-mongo
+    spec:
+      containers:
+      - image: tommyrabes/beer-mongo
+        name: beer-mongo
+        resources: {}
+        env:
+          - name: MONGO_INITDB_ROOT_USERNAME
+            value: "admin"
+          - name: MONGO_INITDB_ROOT_PASSWORD
+            value: "123456"
+status: {}

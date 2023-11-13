@@ -76,10 +76,37 @@ docker run -d -p 8082:8082 --name <container name> --network <network name> tomm
 ```
 
 #### Using Docker Compose
-From the folder `src/main/docker`, run the command:
+From the root folder, run the command:
 ```
 docker compose up
 ```
+To bring down and clear all the containers, run:
+```
+docker compose down
+```
 
 #### Using Kubernetes
-...
+You must have Kubernetes installed on your machine (including kubectl) for this method.
+From the `k8s` folder, run the commands:
+```
+kubectl apply -f beer-mongo-deployment.yml
+kubectl apply -f beer-mongo-service.yml
+
+kubectl apply -f oauth2-authorization-server-deployment.yml
+kubectl apply -f oauth2-authorization-server-service.yml
+
+kubectl apply -f spring-6-reactive-app-deployment.yml
+kubectl apply -f spring-6-reactive-app-service.yml
+```
+
+To clear everything that has been deployed, run:
+```
+kubectl delete -f beer-mongo-deployment.yml
+kubectl delete -f beer-mongo-service.yml
+
+kubectl delete -f oauth2-authorization-server-deployment.yml
+kubectl delete -f oauth2-authorization-server-service.yml
+
+kubectl delete -f spring-6-reactive-app-deployment.yml
+kubectl delete -f spring-6-reactive-app-service.yml
+```

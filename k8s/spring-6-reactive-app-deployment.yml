@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: spring-6-reactive-app
+  name: spring-6-reactive-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spring-6-reactive-app
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: spring-6-reactive-app
+    spec:
+      containers:
+      - image: tommyrabes/spring-6-reactive-app
+        name: spring-6-reactive-app
+        resources: {}
+status: {}
